@@ -15,8 +15,8 @@ jobs:
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
-          source-directory: '/src'
+          source-directory: 'src'
           destination-github-username: 'Anime-Manga'
           destination-repository-name: 'apiService'
           target-branch: dev
-          target-directory: '/src'
+          target-directory: 'src'
