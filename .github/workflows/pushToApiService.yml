@@ -19,4 +19,4 @@ jobs:
           destination-github-username: 'Anime-Manga'
           destination-repository-name: 'apiService'
           target-branch: dev
-          target-directory: 'src'
+          target-directory: 'src/references'
