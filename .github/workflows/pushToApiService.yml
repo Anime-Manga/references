@@ -20,3 +20,4 @@ jobs:
           destination-repository-name: 'apiService'
           target-branch: dev
           target-directory: 'src/references'
+          user-email: mattia.ceschin@gmail.com
