@@ -1,4 +1,4 @@
-name: build documentation and publish
+name: build documentation and publish - upgradeService
 
 on:
   push:
