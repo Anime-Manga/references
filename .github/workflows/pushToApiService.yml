@@ -16,9 +16,9 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.DEPLOY_TOKEN }}
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY_APISERVICES }}
         with:
-          source-directory: 'src'
+          source-directory: src
           destination-github-username: 'Anime-Manga'
           destination-repository-name: 'apiService'
           target-branch: dev
-          target-directory: 'src/references'
+          target-directory: src/references
           user-email: mattia.ceschin@gmail.com
