@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: cpina/github-action-push-to-another-repository@main
+      - uses: nkoppel/push-files-to-another-repository@v1.1.1
         env:
           API_TOKEN_GITHUB: ${{ secrets.DEPLOY_TOKEN }}
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY_APISERVICES }}
         with:
-          source-directory: src
-          destination-github-username: 'Anime-Manga'
-          destination-repository-name: 'apiService'
-          target-branch: dev
-          target-directory: src/references
-          user-email: mattia.ceschin@gmail.com
+          source-files: src
+          destination-username: 'Anime-Manga'
+          destination-repository: 'apiService'
+          destination-branch: dev
+          destination-directory: src/references
+          commit-email: mattia.ceschin@gmail.com
