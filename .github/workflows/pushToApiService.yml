@@ -1,0 +1,24 @@
+name: build documentation and publish - apiService
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:      
+      - uses: actions/checkout@v2
+      - uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.DEPLOY_TOKEN }}
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY_APISERVICES }}
+        with:
+          source-directory: src
+          destination-github-username: 'Anime-Manga'
+          destination-repository-name: 'apiService'
+          target-branch: dev
+          target-directory: src/references
+          user-email: mattia.ceschin@gmail.com
