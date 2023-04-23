@@ -57,14 +57,39 @@ namespace Cesxhin.AnimeManga.Application.Schema
             //check valid schema
             Console.WriteLine("[STARTUP] Check schemas");
             var schemasFile = System.IO.File.ReadAllText("schemas.json");
+            var schemaTemplate = JObject.Parse(System.IO.File.ReadAllText("schema_template.json"));
+
             var schemas = JObject.Parse(schemasFile);
             var checkArray = new List<bool>();
 
+            List<string> identityNameCfg = new();
+            List<string> name = new();
+
             foreach (var schema in schemas)
             {
-                var selectSchema = schemas.GetValue(schema.Key).ToObject<JObject>();
 
-                checkArray.Add(selectSchema.ContainsKey("name") && selectSchema.GetValue("name").Type == JTokenType.String);
+                //check duplicate key
+                if (identityNameCfg.Contains(schema.Key))
+                    throw new Exception("Key already exists.");
+                else
+                    identityNameCfg.Add(schema.Key);
+
+                //load schema
+                var selectSchema = schemas.GetValue(schema.Key).ToObject<JObject>();
+                var selectSchemaTemplate = schemaTemplate.GetValue("key_id").ToObject<JObject>();
+
+                foreach (var root in selectSchemaTemplate)
+                {
+                    CheckField(root.Key, selectSchema);
+                }
+
+                //CheckField("type", selectSchema);
+                //CheckField("search", selectSchema);
+                //CheckField("description", selectSchema);
+
+                /*bool nameValue = string.IsNullOrEmpty(selectSchema.SelectToken("name").ToString()) ? false : true;
+                if (nameValue) checkArray.Add(selectSchema.ContainsKey("name") && selectSchema.GetValue("name").Type == JTokenType.String); else Console.WriteLine("[STARTUP] FATAL Error on " + selectSchema.SelectToken("name").Path + " on " + schema.Key);
+                
                 checkArray.Add(selectSchema.ContainsKey("type") && selectSchema.GetValue("type").Type == JTokenType.String);
                 checkArray.Add(selectSchema.ContainsKey("search") && selectSchema.GetValue("search").Type == JTokenType.Object);
                 checkArray.Add(selectSchema.ContainsKey("description") && selectSchema.GetValue("description").Type == JTokenType.Object);
@@ -102,10 +127,31 @@ namespace Cesxhin.AnimeManga.Application.Schema
             {
                 Console.WriteLine("[STARTUP] FATAL Wrong schemas");
                 throw new Exception();
-            }
+            }*/
 
-            Environment.SetEnvironmentVariable("SCHEMA", schemasFile);
-            Console.WriteLine("[STARTUP] Ok schemas");
+                Environment.SetEnvironmentVariable("SCHEMA", schemasFile);
+                Console.WriteLine("[STARTUP] Ok schemas");
+            }
+        }
+
+        private static void CheckField(string fieldKey, JObject schema)
+        {
+            if (fieldKey == "check_type")
+            {
+                CheckField((string)schema["type"], schema);
+            }
+            else if (schema.ContainsKey(fieldKey))
+            {
+                if (fieldKey == "type")
+                {
+                    if ((string)schema[fieldKey] != "video" && (string)schema[fieldKey] != "book")
+                        throw new Exception($"Incorrect field key. Must be \"video\" or \"book\".");
+                }
+            }
+            else
+            {
+                throw new Exception($"Missing field {fieldKey}");
+            }
         }
     }
 }
