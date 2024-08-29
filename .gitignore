@@ -403,3 +403,4 @@ FodyWeavers.xsd
 #node
 node_modules
 package.json
+tsconfig.json

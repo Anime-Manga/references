@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import {DateTime} from "luxon";
+import _ from "lodash";
 
 class Logger {
     nameService: string | null = null;
@@ -30,6 +31,14 @@ class Logger {
 
     #baseLog(type: "debug" | "info" | "warning" | "error" | "fatal", ...args: Array<any>){
         let message = `[${DateTime.now().toFormat("dd-MM-yyyy hh:mm:ssZZ")}] [${type.toUpperCase()}] [${this.nameService}]`
+        
+        args = args.map((message) => {
+            if(message instanceof Error){
+                return message.stack;
+            }else{
+                return message;
+            }
+        })
         
         switch(type){
             case "debug":
